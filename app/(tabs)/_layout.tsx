@@ -9,7 +9,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: '#4F46E5',
       }}>
       <Tabs.Screen
-        name="teams"
+        name="index"
         options={{
           title: 'Teams',
           tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
