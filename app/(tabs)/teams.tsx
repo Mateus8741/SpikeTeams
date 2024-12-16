@@ -1,47 +1,41 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
-import { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { useGameStore } from '~/store/gameStore';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+import { getTeamColor, useGameStore } from '~/store/gameStore';
 
 export default function TeamsScreen() {
   const [newPlayerName, setNewPlayerName] = useState('');
-  const { 
-    players, 
-    teams,
-    playersPerTeam,
-    addPlayer, 
-    removePlayer, 
-    formTeams, 
-    setPlayersPerTeam 
-  } = useGameStore();
+  const { players, teams, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
+    useGameStore();
 
   return (
     <>
-      <Stack.Screen 
-        options={{ 
+      <Stack.Screen
+        options={{
           title: 'Team Formation',
           headerStyle: {
             backgroundColor: '#4F46E5',
           },
           headerTintColor: '#fff',
-        }} 
+        }}
       />
-      <ScrollView className="flex-1 bg-gray-50">
-        <View className="p-4 space-y-8">
+      <ScrollView style={styles.container}>
+        <View style={styles.content}>
           {/* Player Registration */}
-          <View className="bg-white rounded-xl p-6 shadow-sm space-y-4">
-            <Text className="text-xl font-bold text-gray-800">Add Players</Text>
-            <View className="flex-row space-x-3">
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Add Players</Text>
+            <View style={styles.inputContainer}>
               <TextInput
-                className="flex-1 rounded-lg border border-gray-300 p-3 bg-gray-50"
+                style={styles.input}
                 value={newPlayerName}
                 onChangeText={setNewPlayerName}
                 placeholder="Enter player name"
                 placeholderTextColor="#9CA3AF"
               />
               <TouchableOpacity
-                className="bg-indigo-600 rounded-lg px-4 items-center justify-center"
+                style={styles.addButton}
                 onPress={() => {
                   if (newPlayerName.trim()) {
                     addPlayer(newPlayerName.trim());
@@ -54,23 +48,18 @@ export default function TeamsScreen() {
           </View>
 
           {/* Players List */}
-          <View className="bg-white rounded-xl p-6 shadow-sm mt-6">
-            <Text className="text-xl font-bold text-gray-800 mb-4">
-              Players ({players.length})
-            </Text>
-            <View className="space-y-3">
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Players ({players.length})</Text>
+            <View style={styles.playersList}>
               {players.map((player) => (
-                <View 
-                  key={player.id} 
-                  className="flex-row items-center justify-between bg-gray-50 p-4 rounded-lg"
-                >
-                  <View className="flex-row items-center space-x-4">
+                <View key={player.id} style={styles.playerItem}>
+                  <View style={styles.playerInfo}>
                     <FontAwesome name="user" size={20} color="#4F46E5" />
-                    <Text className="text-gray-700 text-lg">{player.name}</Text>
+                    <Text style={styles.playerName}>{player.name}</Text>
                   </View>
                   <TouchableOpacity
                     onPress={() => removePlayer(player.id)}
-                    className="bg-red-100 p-3 rounded-full">
+                    style={styles.removeButton}>
                     <FontAwesome name="trash" size={20} color="#DC2626" />
                   </TouchableOpacity>
                 </View>
@@ -79,66 +68,49 @@ export default function TeamsScreen() {
           </View>
 
           {/* Team Formation */}
-          <View className="bg-white rounded-xl p-6 shadow-sm space-y-4 mt-6">
-            <Text className="text-xl font-bold text-gray-800">Team Formation</Text>
-            <View className="flex-row items-center space-x-4">
-              <Text className="text-gray-700">Players per team:</Text>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Team Formation</Text>
+            <View style={styles.formationContainer}>
+              <Text style={styles.label}>Players per team:</Text>
               <TextInput
-                className="w-16 rounded-lg border border-gray-300 p-2 text-center bg-gray-50"
+                style={styles.numberInput}
                 keyboardType="number-pad"
                 value={playersPerTeam.toString()}
                 onChangeText={(text) => setPlayersPerTeam(Number(text))}
               />
             </View>
-            <TouchableOpacity
-              className="bg-indigo-600 p-4 rounded-lg mt-2"
-              onPress={formTeams}>
-              <Text className="text-white text-center text-lg font-semibold">
-                Form Teams
-              </Text>
+            <TouchableOpacity style={styles.formButton} onPress={formTeams}>
+              <Text style={styles.buttonText}>Form Teams</Text>
             </TouchableOpacity>
           </View>
 
           {/* Formed Teams Display */}
           {teams && (
-            <View className="space-y-6">
-              <Text className="text-xl font-bold text-gray-800 px-2">Formed Teams</Text>
-              <View className="flex-row space-x-4">
-                {/* Team 1 */}
-                <View className="flex-1">
-                  <View className="bg-blue-500 rounded-t-xl p-3">
-                    <Text className="text-white text-lg font-bold text-center">
-                      Team 1
-                    </Text>
-                  </View>
-                  <View className="bg-white rounded-b-xl p-4 shadow-sm">
-                    <View className="space-y-2">
-                      {teams[0].players.map((player) => (
-                        <View key={player.id} className="bg-blue-50 p-3 rounded-lg">
-                          <Text className="text-blue-700 text-center">{player.name}</Text>
-                        </View>
-                      ))}
+            <View style={styles.teamsContainer}>
+              <Text style={styles.cardTitle}>Formed Teams</Text>
+              <View style={styles.teamsGrid}>
+                {teams.map((team, index) => {
+                  const colors = getTeamColor(index);
+                  return (
+                    <View key={team.id} style={styles.teamCard}>
+                      <View style={[styles.teamHeader, { backgroundColor: colors.bg }]}>
+                        <Text style={styles.teamTitle}>Team {index + 1}</Text>
+                      </View>
+                      <View style={styles.teamContent}>
+                        {team.players.map((player) => (
+                          <View 
+                            key={player.id} 
+                            style={[styles.playerTag, { backgroundColor: colors.bgLight }]}
+                          >
+                            <Text style={[styles.playerTagText, { color: colors.textLight }]}>
+                              {player.name}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
                     </View>
-                  </View>
-                </View>
-
-                {/* Team 2 */}
-                <View className="flex-1">
-                  <View className="bg-red-500 rounded-t-xl p-3">
-                    <Text className="text-white text-lg font-bold text-center">
-                      Team 2
-                    </Text>
-                  </View>
-                  <View className="bg-white rounded-b-xl p-4 shadow-sm">
-                    <View className="space-y-2">
-                      {teams[1].players.map((player) => (
-                        <View key={player.id} className="bg-red-50 p-3 rounded-lg">
-                          <Text className="text-red-700 text-center">{player.name}</Text>
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                </View>
+                  );
+                })}
               </View>
             </View>
           )}
@@ -146,4 +118,145 @@ export default function TeamsScreen() {
       </ScrollView>
     </>
   );
-} 
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F9FAFB',
+  },
+  content: {
+    padding: 16,
+    gap: 16,
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    color: '#1F2937',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: '#F9FAFB',
+  },
+  addButton: {
+    backgroundColor: '#4F46E5',
+    borderRadius: 8,
+    padding: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playersList: {
+    gap: 8,
+  },
+  playerItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#F9FAFB',
+    padding: 12,
+    borderRadius: 8,
+  },
+  playerInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  playerName: {
+    fontSize: 16,
+    color: '#4B5563',
+  },
+  removeButton: {
+    backgroundColor: '#FEE2E2',
+    padding: 8,
+    borderRadius: 20,
+  },
+  formationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 16,
+    color: '#4B5563',
+  },
+  numberInput: {
+    width: 60,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 8,
+    padding: 8,
+    textAlign: 'center',
+    backgroundColor: '#F9FAFB',
+  },
+  formButton: {
+    backgroundColor: '#4F46E5',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  teamsContainer: {
+    gap: 12,
+  },
+  teamsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  teamCard: {
+    width: '48%',
+    backgroundColor: 'white',
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  teamHeader: {
+    padding: 12,
+  },
+  teamTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  teamContent: {
+    padding: 12,
+    gap: 8,
+  },
+  playerTag: {
+    padding: 8,
+    borderRadius: 6,
+  },
+  playerTagText: {
+    textAlign: 'center',
+  },
+});

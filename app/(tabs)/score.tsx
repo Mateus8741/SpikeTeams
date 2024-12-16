@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { useGameStore } from '~/store/gameStore';
+import { getTeamColor, useGameStore } from '~/store/gameStore';
 
 export default function ScoreScreen() {
   const { 
@@ -32,76 +32,56 @@ export default function ScoreScreen() {
       />
       <ScrollView className="flex-1 bg-gray-50">
         <View className="p-4 space-y-6">
-          <View className="flex-row space-x-6">
-            {/* Team 1 */}
-            <View className="flex-1">
-              <View className="bg-blue-500 rounded-t-xl p-3">
-                <Text className="text-white text-xl font-bold text-center">
-                  Team 1
-                </Text>
-              </View>
-              <View className="bg-white rounded-b-xl p-4 shadow-sm">
-                <View className="items-center mb-4">
-                  <Text className="text-4xl font-bold text-blue-500">
-                    {teams[0].score}
-                  </Text>
-                  <View className="flex-row space-x-2 mt-2">
-                    <TouchableOpacity
-                      className="bg-blue-100 p-2 rounded-full"
-                      onPress={() => decrementScore(0)}>
-                      <FontAwesome name="minus" size={20} color="#2563EB" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      className="bg-blue-100 p-2 rounded-full"
-                      onPress={() => incrementScore(0)}>
-                      <FontAwesome name="plus" size={20} color="#2563EB" />
-                    </TouchableOpacity>
+          <View className="flex-row flex-wrap">
+            {teams.map((team, index) => {
+              const colors = getTeamColor(index);
+              const iconColors = ['#3B82F6', '#EF4444', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899'];
+              return (
+                <View 
+                  key={team.id}
+                  className="w-1/2 p-2"
+                >
+                  <View className="flex-1">
+                    <View className={`${colors.bg} rounded-t-xl p-3`}>
+                      <Text className="text-white text-xl font-bold text-center">
+                        Team {index + 1}
+                      </Text>
+                    </View>
+                    <View className="bg-white rounded-b-xl p-4 shadow-sm">
+                      <View className="items-center mb-4">
+                        <Text className={`text-4xl font-bold ${colors.text}`}>
+                          {team.score}
+                        </Text>
+                        <View className="flex-row space-x-2 mt-2">
+                          <TouchableOpacity
+                            className={`${colors.bgLight} p-2 rounded-full`}
+                            onPress={() => decrementScore(index)}>
+                            <FontAwesome name="minus" size={20} color={iconColors[index % iconColors.length]} />
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            className={`${colors.bgLight} p-2 rounded-full`}
+                            onPress={() => incrementScore(index)}>
+                            <FontAwesome name="plus" size={20} color={iconColors[index % iconColors.length]} />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <View className="space-y-2">
+                        {team.players.map((player) => (
+                          <View 
+                            key={player.id} 
+                            className={`${colors.bgLight} p-2 rounded-lg`}
+                          >
+                            <Text className={`${colors.textLight}`}>
+                              {player.name}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
                   </View>
                 </View>
-                <View className="space-y-2">
-                  {teams[0].players.map((player) => (
-                    <View key={player.id} className="bg-blue-50 p-2 rounded-lg">
-                      <Text className="text-blue-700">{player.name}</Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            </View>
-
-            {/* Team 2 */}
-            <View className="flex-1">
-              <View className="bg-red-500 rounded-t-xl p-3">
-                <Text className="text-white text-xl font-bold text-center">
-                  Team 2
-                </Text>
-              </View>
-              <View className="bg-white rounded-b-xl p-4 shadow-sm">
-                <View className="items-center mb-4">
-                  <Text className="text-4xl font-bold text-red-500">
-                    {teams[1].score}
-                  </Text>
-                  <View className="flex-row space-x-2 mt-2">
-                    <TouchableOpacity
-                      className="bg-red-100 p-2 rounded-full"
-                      onPress={() => decrementScore(1)}>
-                      <FontAwesome name="minus" size={20} color="#DC2626" />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      className="bg-red-100 p-2 rounded-full"
-                      onPress={() => incrementScore(1)}>
-                      <FontAwesome name="plus" size={20} color="#DC2626" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View className="space-y-2">
-                  {teams[1].players.map((player) => (
-                    <View key={player.id} className="bg-red-50 p-2 rounded-lg">
-                      <Text className="text-red-700">{player.name}</Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            </View>
+              );
+            })}
           </View>
 
           <TouchableOpacity
