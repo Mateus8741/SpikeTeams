@@ -94,11 +94,7 @@ export default function TeamsScreen() {
       </ScrollView>
 
       {teams && (
-        <TeamsModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          teams={teams}
-        />
+        <TeamsModal visible={modalVisible} onClose={() => setModalVisible(false)} teams={teams} />
       )}
     </>
   );
