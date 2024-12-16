@@ -22,6 +22,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="game"
+        options={{
+          title: 'Volleyball',
+          tabBarIcon: ({ color }) => <TabBarIcon name="volleyball" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="two"
         options={{
           title: 'Tab Two',
