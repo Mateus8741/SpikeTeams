@@ -3,12 +3,19 @@ import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { getTeamColor, useGameStore } from '~/store/gameStore';
+import { TeamsModal } from '~/components/TeamsModal';
+import { useGameStore } from '~/store/gameStore';
 
 export default function TeamsScreen() {
   const [newPlayerName, setNewPlayerName] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
   const { players, teams, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
     useGameStore();
+
+  const handleFormTeams = () => {
+    formTeams();
+    setModalVisible(true);
+  };
 
   return (
     <>
@@ -79,43 +86,20 @@ export default function TeamsScreen() {
                 onChangeText={(text) => setPlayersPerTeam(Number(text))}
               />
             </View>
-            <TouchableOpacity style={styles.formButton} onPress={formTeams}>
+            <TouchableOpacity style={styles.formButton} onPress={handleFormTeams}>
               <Text style={styles.buttonText}>Form Teams</Text>
             </TouchableOpacity>
           </View>
-
-          {/* Formed Teams Display */}
-          {teams && (
-            <View style={styles.teamsContainer}>
-              <Text style={styles.cardTitle}>Formed Teams</Text>
-              <View style={styles.teamsGrid}>
-                {teams.map((team, index) => {
-                  const colors = getTeamColor(index);
-                  return (
-                    <View key={team.id} style={styles.teamCard}>
-                      <View style={[styles.teamHeader, { backgroundColor: colors.bg }]}>
-                        <Text style={styles.teamTitle}>Team {index + 1}</Text>
-                      </View>
-                      <View style={styles.teamContent}>
-                        {team.players.map((player) => (
-                          <View 
-                            key={player.id} 
-                            style={[styles.playerTag, { backgroundColor: colors.bgLight }]}
-                          >
-                            <Text style={[styles.playerTagText, { color: colors.textLight }]}>
-                              {player.name}
-                            </Text>
-                          </View>
-                        ))}
-                      </View>
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          )}
         </View>
       </ScrollView>
+
+      {teams && (
+        <TeamsModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          teams={teams}
+        />
+      )}
     </>
   );
 }
@@ -219,44 +203,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  teamsContainer: {
-    gap: 12,
-  },
-  teamsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  teamCard: {
-    width: '48%',
-    backgroundColor: 'white',
-    borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  teamHeader: {
-    padding: 12,
-  },
-  teamTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  teamContent: {
-    padding: 12,
-    gap: 8,
-  },
-  playerTag: {
-    padding: 8,
-    borderRadius: 6,
-  },
-  playerTagText: {
-    textAlign: 'center',
   },
 });

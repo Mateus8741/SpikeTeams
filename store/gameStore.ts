@@ -6,7 +6,7 @@ interface Player {
   name: string;
 }
 
-interface Team {
+export interface Team {
   id: string;
   players: Player[];
   score: number;
