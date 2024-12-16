@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface Player {
   id: string;
@@ -16,7 +17,7 @@ interface GameState {
   players: Player[];
   teams: Team[] | null;
   playersPerTeam: number;
-  
+
   // Actions
   addPlayer: (name: string) => void;
   removePlayer: (id: string) => void;
@@ -36,37 +37,37 @@ interface TeamColors {
 
 const TEAM_COLORS: TeamColors[] = [
   {
-    bg: '#3B82F6',    // blue
+    bg: '#3B82F6', // blue
     text: '#3B82F6',
     bgLight: '#BFDBFE',
     textLight: '#1D4ED8',
   },
   {
-    bg: '#EF4444',    // red
+    bg: '#EF4444', // red
     text: '#EF4444',
     bgLight: '#FEE2E2',
     textLight: '#B91C1C',
   },
   {
-    bg: '#10B981',    // emerald
+    bg: '#10B981', // emerald
     text: '#10B981',
     bgLight: '#D1FAE5',
     textLight: '#047857',
   },
   {
-    bg: '#8B5CF6',    // purple
+    bg: '#8B5CF6', // purple
     text: '#8B5CF6',
     bgLight: '#EDE9FE',
     textLight: '#6D28D9',
   },
   {
-    bg: '#F59E0B',    // amber
+    bg: '#F59E0B', // amber
     text: '#F59E0B',
     bgLight: '#FEF3C7',
     textLight: '#B45309',
   },
   {
-    bg: '#EC4899',    // pink
+    bg: '#EC4899', // pink
     text: '#EC4899',
     bgLight: '#FCE7F3',
     textLight: '#BE185D',
@@ -111,7 +112,7 @@ export const useGameStore = create<GameState>()(
               });
             }
           }
-          
+
           return { teams };
         }),
 
@@ -145,6 +146,7 @@ export const useGameStore = create<GameState>()(
     }),
     {
       name: 'volleyball-game-storage',
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );
@@ -152,4 +154,4 @@ export const useGameStore = create<GameState>()(
 // Atualizar a função getTeamColor para retornar o objeto de cores
 export const getTeamColor = (index: number): TeamColors => {
   return TEAM_COLORS[index % TEAM_COLORS.length];
-}; 
+};
