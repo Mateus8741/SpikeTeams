@@ -8,6 +8,7 @@ export default function TeamsScreen() {
   const [newPlayerName, setNewPlayerName] = useState('');
   const { 
     players, 
+    teams,
     playersPerTeam,
     addPlayer, 
     removePlayer, 
@@ -86,7 +87,7 @@ export default function TeamsScreen() {
                 className="w-16 rounded-lg border border-gray-300 p-2 text-center bg-gray-50"
                 keyboardType="number-pad"
                 value={playersPerTeam.toString()}
-                onChangeText={(text) => setPlayersPerTeam(parseInt(text) || 6)}
+                onChangeText={(text) => setPlayersPerTeam(Number(text))}
               />
             </View>
             <TouchableOpacity
@@ -97,6 +98,50 @@ export default function TeamsScreen() {
               </Text>
             </TouchableOpacity>
           </View>
+
+          {/* Formed Teams Display */}
+          {teams && (
+            <View className="space-y-6">
+              <Text className="text-xl font-bold text-gray-800 px-2">Formed Teams</Text>
+              <View className="flex-row space-x-4">
+                {/* Team 1 */}
+                <View className="flex-1">
+                  <View className="bg-blue-500 rounded-t-xl p-3">
+                    <Text className="text-white text-lg font-bold text-center">
+                      Team 1
+                    </Text>
+                  </View>
+                  <View className="bg-white rounded-b-xl p-4 shadow-sm">
+                    <View className="space-y-2">
+                      {teams[0].players.map((player) => (
+                        <View key={player.id} className="bg-blue-50 p-3 rounded-lg">
+                          <Text className="text-blue-700 text-center">{player.name}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+
+                {/* Team 2 */}
+                <View className="flex-1">
+                  <View className="bg-red-500 rounded-t-xl p-3">
+                    <Text className="text-white text-lg font-bold text-center">
+                      Team 2
+                    </Text>
+                  </View>
+                  <View className="bg-white rounded-b-xl p-4 shadow-sm">
+                    <View className="space-y-2">
+                      {teams[1].players.map((player) => (
+                        <View key={player.id} className="bg-red-50 p-3 rounded-lg">
+                          <Text className="text-red-700 text-center">{player.name}</Text>
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
     </>

@@ -31,7 +31,7 @@ export const useGameStore = create<GameState>()(
     (set) => ({
       players: [],
       teams: null,
-      playersPerTeam: 6,
+      playersPerTeam: 4,
 
       addPlayer: (name) =>
         set((state) => ({
