@@ -8,7 +8,7 @@ import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
 
 export default function ScoreScreen() {
   const { teams } = useTeamsStore();
-  const { scores, incrementScore, decrementScore } = useScoreStore();
+  const { scores, incrementScore, decrementScore, resetScores } = useScoreStore();
   const router = useRouter();
   const [currentTeamIndex, setCurrentTeamIndex] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(false);
@@ -54,6 +54,7 @@ export default function ScoreScreen() {
     } else {
       setCurrentTeamIndex((currentTeamIndex + 1) % teams.length);
     }
+    resetScores();
     setGameOver(false);
   };
 
