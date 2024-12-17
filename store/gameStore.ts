@@ -15,7 +15,7 @@ export interface Team {
 
 interface GameState {
   players: Player[];
-  teams: Team[] | null;
+  teams: Team[];
   playersPerTeam: number;
 
   // Actions
@@ -78,7 +78,7 @@ export const useGameStore = create<GameState>()(
   persist(
     (set) => ({
       players: [],
-      teams: null,
+      teams: [],
       playersPerTeam: 4,
 
       addPlayer: (name) =>
@@ -136,7 +136,7 @@ export const useGameStore = create<GameState>()(
 
       resetGame: () =>
         set({
-          teams: null,
+          teams: [],
         }),
 
       setPlayersPerTeam: (count) =>
