@@ -40,7 +40,13 @@ export default function ScoreScreen() {
 
   const resetWinningTeamScore = () => {
     const winningTeamIndex = team1.score > team2.score ? currentTeamIndex : (currentTeamIndex + 1) % teams.length;
-    teams[winningTeamIndex].score = 0; // Zera a pontuação do time que ganhou
+
+    // Zera a pontuação dos times que estão no placar
+    team1.score = 0;
+    team2.score = 0;
+
+    // Atualiza o índice do time atual para o próximo time
+    setCurrentTeamIndex((winningTeamIndex + 1) % teams.length); // O próximo time a competir
     setGameOver(false); // Reseta o estado do jogo
   };
 
@@ -60,7 +66,7 @@ export default function ScoreScreen() {
           activeOpacity={0.7}
           onPress={() => incrementScore(currentTeamIndex)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team 1</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">{team1.name}</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{team1.score}</Text>
             <View className="mb-4 flex-row space-x-5">
               <TouchableOpacity
@@ -99,7 +105,7 @@ export default function ScoreScreen() {
           activeOpacity={0.7}
           onPress={() => incrementScore((currentTeamIndex + 1) % teams.length)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team 2</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">{team2.name}</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{team2.score}</Text>
             <View className="mb-4 flex-row space-x-5">
               <TouchableOpacity
@@ -135,13 +141,13 @@ export default function ScoreScreen() {
       {gameOver && (
         <View className="absolute inset-0 items-center justify-center bg-black/80">
           <Text className="text-5xl font-bold text-white">
-            {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
+            {team1.score > team2.score ? `${team1.name} Wins!` : `${team2.name} Wins!`}
           </Text>
           <TouchableOpacity
             className="mt-4 rounded bg-white p-2"
-            onPress={resetWinningTeamScore} // Chama a função para zerar a pontuação do time vencedor
+            onPress={resetWinningTeamScore}
           >
-            <Text className="text-lg font-bold text-black">Zerar Placar do Time Vencedor</Text>
+            <Text className="text-lg font-bold text-black">Continuar com Próximo Time</Text>
           </TouchableOpacity>
         </View>
       )}
