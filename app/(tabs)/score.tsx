@@ -38,6 +38,15 @@ export default function ScoreScreen() {
     return false;
   };
 
+  const resetScores = () => {
+    // Reseta as pontuações e o estado do jogo
+    teams.forEach(team => {
+      team.score = 0; // Reseta a pontuação de cada time
+    });
+    setCurrentTeamIndex(0); // Reseta o índice do time atual
+    setGameOver(false); // Reseta o estado do jogo
+  };
+
   return (
     <>
       <Stack.Screen
@@ -131,6 +140,12 @@ export default function ScoreScreen() {
           <Text className="text-5xl font-bold text-white">
             {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
           </Text>
+          <TouchableOpacity
+            className="mt-4 rounded bg-white p-2"
+            onPress={resetScores} // Chama a função para resetar os placares
+          >
+            <Text className="text-lg font-bold text-black">Resetar Placar</Text>
+          </TouchableOpacity>
         </View>
       )}
 
