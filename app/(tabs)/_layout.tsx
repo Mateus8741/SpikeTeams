@@ -1,23 +1,13 @@
 import { Tabs, usePathname } from 'expo-router';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import { useEffect } from 'react';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
+
+import { useOrientation } from '~/utils/useOrientation';
 
 export default function TabLayout() {
   const pathname = usePathname();
 
-  useEffect(() => {
-    async function updateOrientation() {
-      if (pathname === '/score') {
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-      } else {
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-      }
-    }
-
-    updateOrientation();
-  }, [pathname]);
+  useOrientation(pathname);
 
   return (
     <Tabs
