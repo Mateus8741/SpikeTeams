@@ -1,35 +1,60 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
-import { getTeamColor, useGameStore } from '~/store/gameStore';
+import { useScoreStore } from '~/store/scoreStore';
+import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
 
 export default function ScoreScreen() {
-  const { teams, incrementScore, decrementScore } = useGameStore();
+  const { teams } = useTeamsStore();
+  const { scores, incrementScore, decrementScore } = useScoreStore();
   const router = useRouter();
+  const [currentTeamIndex, setCurrentTeamIndex] = React.useState(0);
+  const [gameOver, setGameOver] = React.useState(false);
 
-  if (!teams) {
-    return (
-      <View className="flex-1 items-center justify-center bg-gray-50">
-        <Text className="px-5 text-center text-lg text-gray-500">
-          Form teams first to start the game
-        </Text>
-      </View>
-    );
-  }
+  // if (!teams || teams.length < 2) {
+  //   return (
+  //     <View className="flex-1 items-center justify-center bg-gray-50">
+  //       <Text className="px-5 text-center text-lg text-gray-500">
+  //         Form teams first to start the game
+  //       </Text>
+  //     </View>
+  //   );
+  // }
 
-  const team1 = teams[0];
-  const team2 = teams[1];
+  const team1 = teams[currentTeamIndex];
+  const team2 = teams[(currentTeamIndex + 1) % teams.length];
+
+  // const colors1 = getTeamColor(currentTeamIndex);
+  // const colors2 = getTeamColor((currentTeamIndex + 1) % teams.length);
   const colors1 = getTeamColor(0);
   const colors2 = getTeamColor(2);
 
+  const score1 = scores[currentTeamIndex] || 0;
+  const score2 = scores[(currentTeamIndex + 1) % teams.length] || 0;
+
   const isGameOver = () => {
-    if (team1.score >= 12 || team2.score >= 12) {
-      const scoreDifference = Math.abs(team1.score - team2.score);
+    if (score1 >= 12 || score2 >= 12) {
+      const scoreDifference = Math.abs(score1 - score2);
       return scoreDifference >= 2;
     }
     return false;
+  };
+
+  useEffect(() => {
+    if (isGameOver()) {
+      setGameOver(true);
+    }
+  }, [score1, score2]);
+
+  const resetWinningTeamScore = () => {
+    if (score1 > score2) {
+      setCurrentTeamIndex(currentTeamIndex);
+    } else {
+      setCurrentTeamIndex((currentTeamIndex + 1) % teams.length);
+    }
+    setGameOver(false);
   };
 
   return (
@@ -46,17 +71,17 @@ export default function ScoreScreen() {
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors1.bg }}
           activeOpacity={0.7}
-          onPress={() => incrementScore(0)}>
+          onPress={() => incrementScore(currentTeamIndex)}>
           <View className="w-full items-center">
             <Text className="mb-2 text-4xl font-bold text-white">Team 1</Text>
-            <Text className="mb-2 text-[120px] font-bold text-white">{team1.score}</Text>
+            <Text className="mb-2 text-[120px] font-bold text-white">{score1}</Text>
             <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
                 className="h-16 w-16 items-center justify-center rounded-full"
                 style={{ backgroundColor: colors1.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  decrementScore(0);
+                  decrementScore(currentTeamIndex);
                 }}>
                 <FontAwesome name="minus" size={32} color={colors1.textLight} />
               </TouchableOpacity>
@@ -65,18 +90,11 @@ export default function ScoreScreen() {
                 style={{ backgroundColor: colors1.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  incrementScore(0);
+                  incrementScore(currentTeamIndex);
                 }}>
                 <FontAwesome name="plus" size={32} color={colors1.textLight} />
               </TouchableOpacity>
             </View>
-            {/* <View className="items-center space-y-1">
-              {team1.players.map((player) => (
-                <Text key={player.id} className="text-lg text-white opacity-90">
-                  {player.name}
-                </Text>
-              ))}
-            </View> */}
           </View>
         </TouchableOpacity>
 
@@ -84,17 +102,17 @@ export default function ScoreScreen() {
         <Pressable
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors2.bg }}
-          onPress={() => incrementScore(1)}>
+          onPress={() => incrementScore((currentTeamIndex + 1) % teams.length)}>
           <View className="w-full items-center">
             <Text className="mb-2 text-4xl font-bold text-white">Team 2</Text>
-            <Text className="mb-2 text-[120px] font-bold text-white">{team2.score}</Text>
+            <Text className="mb-2 text-[120px] font-bold text-white">{score2}</Text>
             <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
                 className="h-16 w-16 items-center justify-center rounded-full"
                 style={{ backgroundColor: colors2.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  decrementScore(1);
+                  decrementScore((currentTeamIndex + 1) % teams.length);
                 }}>
                 <FontAwesome name="minus" size={32} color={colors2.textLight} />
               </TouchableOpacity>
@@ -103,35 +121,29 @@ export default function ScoreScreen() {
                 style={{ backgroundColor: colors2.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  incrementScore(1);
+                  incrementScore((currentTeamIndex + 1) % teams.length);
                 }}>
                 <FontAwesome name="plus" size={32} color={colors2.textLight} />
               </TouchableOpacity>
             </View>
-            {/* <View className="items-center space-y-1">
-              {team2.players.map((player) => (
-                <Text key={player.id} className="text-lg text-white opacity-90">
-                  {player.name}
-                </Text>
-              ))}
-            </View> */}
           </View>
         </Pressable>
       </View>
 
-      {isGameOver() && (
+      {gameOver && (
         <View className="absolute inset-0 items-center justify-center bg-black/80">
           <Text className="text-5xl font-bold text-white">
-            {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
+            {score1 > score2 ? 'Team 1 Wins!' : 'Team 2 Wins!'}
           </Text>
+          <TouchableOpacity className="mt-4 rounded bg-white p-2" onPress={resetWinningTeamScore}>
+            <Text className="text-lg font-bold text-black">Continuar com Próximo Time</Text>
+          </TouchableOpacity>
         </View>
       )}
 
-      {/* Botão de voltar flutuante no canto superior direito */}
       <TouchableOpacity
         className="absolute left-14 top-8 rounded-full bg-white/50 p-2"
-        onPress={() => router.push('/')} // Navegando de volta para a tela index
-      >
+        onPress={() => router.push('/')}>
         <FontAwesome name="arrow-left" size={24} color="white" />
       </TouchableOpacity>
     </>

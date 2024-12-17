@@ -10,24 +10,78 @@ interface Player {
 export interface Team {
   id: string;
   players: Player[];
-  score: number;
 }
 
-interface GameState {
+interface TeamsState {
   players: Player[];
   teams: Team[];
   playersPerTeam: number;
-
-  // Actions
   addPlayer: (name: string) => void;
   removePlayer: (id: string) => void;
   formTeams: () => void;
-  incrementScore: (teamIndex: number) => void;
-  decrementScore: (teamIndex: number) => void;
-  resetGame: () => void;
   setPlayersPerTeam: (count: number) => void;
+  resetTeams: () => void;
 }
 
+export const useTeamsStore = create<TeamsState>()(
+  persist(
+    (set) => ({
+      players: [],
+      teams: [],
+      playersPerTeam: 4,
+
+      addPlayer: (name) =>
+        set((state) => ({
+          players: [...state.players, { id: Math.random().toString(), name }],
+        })),
+
+      removePlayer: (id) =>
+        set((state) => ({
+          players: state.players.filter((p) => p.id !== id),
+        })),
+
+      formTeams: () =>
+        set((state) => {
+          const shuffled = [...state.players].sort(() => Math.random() - 0.5);
+          const numberOfTeams = Math.ceil(shuffled.length / state.playersPerTeam);
+          const teams: Team[] = [];
+
+          for (let i = 0; i < numberOfTeams; i++) {
+            const startIndex = i * state.playersPerTeam;
+            const teamPlayers = shuffled.slice(
+              startIndex,
+              Math.min(startIndex + state.playersPerTeam, shuffled.length)
+            );
+
+            if (teamPlayers.length > 0) {
+              teams.push({
+                id: `team-${i + 1}`,
+                players: teamPlayers,
+              });
+            }
+          }
+
+          return { teams };
+        }),
+
+      setPlayersPerTeam: (count) =>
+        set({
+          playersPerTeam: count,
+        }),
+
+      resetTeams: () =>
+        set({
+          teams: [],
+        }),
+    }),
+    {
+      name: 'volleyball-teams-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
+
+// Cores dos times
 interface TeamColors {
   bg: string;
   text: string;
@@ -74,84 +128,6 @@ const TEAM_COLORS: TeamColors[] = [
   },
 ];
 
-export const useGameStore = create<GameState>()(
-  persist(
-    (set) => ({
-      players: [],
-      teams: [],
-      playersPerTeam: 4,
-
-      addPlayer: (name) =>
-        set((state) => ({
-          players: [...state.players, { id: Math.random().toString(), name }],
-        })),
-
-      removePlayer: (id) =>
-        set((state) => ({
-          players: state.players.filter((p) => p.id !== id),
-        })),
-
-      formTeams: () =>
-        set((state) => {
-          const shuffled = [...state.players].sort(() => Math.random() - 0.5);
-          const numberOfTeams = Math.ceil(shuffled.length / state.playersPerTeam);
-          const teams: Team[] = [];
-
-          for (let i = 0; i < numberOfTeams; i++) {
-            const startIndex = i * state.playersPerTeam;
-            const teamPlayers = shuffled.slice(
-              startIndex,
-              Math.min(startIndex + state.playersPerTeam, shuffled.length)
-            );
-
-            if (teamPlayers.length > 0) {
-              teams.push({
-                id: `team-${i + 1}`,
-                players: teamPlayers,
-                score: 0,
-              });
-            }
-          }
-
-          return { teams };
-        }),
-
-      incrementScore: (teamIndex) =>
-        set((state) => {
-          if (!state.teams) return state;
-          const newTeams = [...state.teams];
-          newTeams[teamIndex].score += 1;
-          return { teams: newTeams };
-        }),
-
-      decrementScore: (teamIndex) =>
-        set((state) => {
-          if (!state.teams) return state;
-          const newTeams = [...state.teams];
-          if (newTeams[teamIndex].score > 0) {
-            newTeams[teamIndex].score -= 1;
-          }
-          return { teams: newTeams };
-        }),
-
-      resetGame: () =>
-        set({
-          teams: [],
-        }),
-
-      setPlayersPerTeam: (count) =>
-        set({
-          playersPerTeam: count,
-        }),
-    }),
-    {
-      name: 'volleyball-game-storage',
-      storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
-);
-
-// Atualizar a função getTeamColor para retornar o objeto de cores
 export const getTeamColor = (index: number): TeamColors => {
   return TEAM_COLORS[index % TEAM_COLORS.length];
-};
+}; 

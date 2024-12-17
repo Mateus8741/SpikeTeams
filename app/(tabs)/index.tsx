@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { TeamsModal } from '~/components/TeamsModal';
-import { useGameStore } from '~/store/gameStore';
+import { useTeamsStore } from '~/store/teamsStore';
 
 export default function TeamsScreen() {
   const [newPlayerName, setNewPlayerName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const { players, teams, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
-    useGameStore();
+    useTeamsStore();
 
   const handleFormTeams = () => {
     formTeams();

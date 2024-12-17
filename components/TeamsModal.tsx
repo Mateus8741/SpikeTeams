@@ -2,7 +2,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { getTeamColor, Team } from '~/store/gameStore';
+import { useScoreStore } from '~/store/scoreStore';
+import type { Team } from '~/store/teamsStore';
+import { getTeamColor } from '~/store/teamsStore';
 
 interface TeamsModalProps {
   visible: boolean;
@@ -11,6 +13,8 @@ interface TeamsModalProps {
 }
 
 export function TeamsModal({ visible, onClose, teams }: TeamsModalProps) {
+  const { scores } = useScoreStore();
+
   return (
     <Modal animationType="slide" transparent visible={visible} onRequestClose={onClose}>
       <View style={styles.centeredView}>
