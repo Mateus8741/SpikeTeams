@@ -4,13 +4,9 @@ import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { getTeamColor, useGameStore } from '~/store/gameStore';
-import { useScreenOrientation } from '~/utils/screenChange';
 
 export default function ScoreScreen() {
   const { teams, incrementScore, decrementScore } = useGameStore();
-
-  // Força orientação landscape nesta tela
-  useScreenOrientation('landscape');
 
   if (!teams) {
     return (

@@ -5,16 +5,12 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 
 import { TeamsModal } from '~/components/TeamsModal';
 import { useGameStore } from '~/store/gameStore';
-import { useScreenOrientation } from '~/utils/screenChange';
 
 export default function TeamsScreen() {
   const [newPlayerName, setNewPlayerName] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const { players, teams, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
     useGameStore();
-
-  // Força orientação landscape nesta tela
-  useScreenOrientation('portrait');
 
   const handleFormTeams = () => {
     formTeams();
