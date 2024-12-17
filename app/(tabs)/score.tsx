@@ -1,6 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 import { getTeamColor, useGameStore } from '~/store/gameStore';
@@ -9,26 +9,20 @@ export default function ScoreScreen() {
   const { teams, incrementScore, decrementScore } = useGameStore();
   const router = useRouter();
 
-  const [currentTeamIndex, setCurrentTeamIndex] = React.useState(0);
-  const [gameOver, setGameOver] = React.useState(false);
+  if (!teams) {
+    return (
+      <View className="flex-1 items-center justify-center bg-gray-50">
+        <Text className="px-5 text-center text-lg text-gray-500">
+          Form teams first to start the game
+        </Text>
+      </View>
+    );
+  }
 
-  const team1 = teams[currentTeamIndex];
-  const team2 = teams[(currentTeamIndex + 1) % teams.length];
-  const colors1 = getTeamColor(currentTeamIndex);
-  const colors2 = getTeamColor((currentTeamIndex + 1) % teams.length);
-
-  useEffect(() => {
-    handleGameStatus();
-  }, [team1.score, team2.score]);
-
-  const handleGameStatus = () => {
-    if (isGameOver() && !gameOver) {
-      setGameOver(true);
-      setCurrentTeamIndex((currentTeamIndex + 1) % teams.length);
-    } else if (!isGameOver()) {
-      setGameOver(false);
-    }
-  };
+  const team1 = teams[0];
+  const team2 = teams[1];
+  const colors1 = getTeamColor(0);
+  const colors2 = getTeamColor(2);
 
   const isGameOver = () => {
     if (team1.score >= 12 || team2.score >= 12) {
@@ -36,18 +30,6 @@ export default function ScoreScreen() {
       return scoreDifference >= 2;
     }
     return false;
-  };
-
-  const resetWinningTeamScore = () => {
-    const winningTeamIndex = team1.score > team2.score ? currentTeamIndex : (currentTeamIndex + 1) % teams.length;
-
-    // Zera a pontuação dos times que estão no placar
-    team1.score = 0;
-    team2.score = 0;
-
-    // Atualiza o índice do time atual para o próximo time
-    setCurrentTeamIndex((winningTeamIndex + 1) % teams.length); // O próximo time a competir
-    setGameOver(false); // Reseta o estado do jogo
   };
 
   return (
@@ -64,9 +46,9 @@ export default function ScoreScreen() {
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors1.bg }}
           activeOpacity={0.7}
-          onPress={() => incrementScore(currentTeamIndex)}>
+          onPress={() => incrementScore(0)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">{team1.name}</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">Team 1</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{team1.score}</Text>
             <View className="mb-4 flex-row space-x-5">
               <TouchableOpacity
@@ -74,7 +56,7 @@ export default function ScoreScreen() {
                 style={{ backgroundColor: colors1.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  decrementScore(currentTeamIndex);
+                  decrementScore(0);
                 }}>
                 <FontAwesome name="minus" size={32} color={colors1.textLight} />
               </TouchableOpacity>
@@ -83,7 +65,7 @@ export default function ScoreScreen() {
                 style={{ backgroundColor: colors1.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  incrementScore(currentTeamIndex);
+                  incrementScore(0);
                 }}>
                 <FontAwesome name="plus" size={32} color={colors1.textLight} />
               </TouchableOpacity>
@@ -103,9 +85,9 @@ export default function ScoreScreen() {
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors2.bg }}
           activeOpacity={0.7}
-          onPress={() => incrementScore((currentTeamIndex + 1) % teams.length)}>
+          onPress={() => incrementScore(1)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">{team2.name}</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">Team 2</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{team2.score}</Text>
             <View className="mb-4 flex-row space-x-5">
               <TouchableOpacity
@@ -113,7 +95,7 @@ export default function ScoreScreen() {
                 style={{ backgroundColor: colors2.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  decrementScore((currentTeamIndex + 1) % teams.length);
+                  decrementScore(1);
                 }}>
                 <FontAwesome name="minus" size={32} color={colors2.textLight} />
               </TouchableOpacity>
@@ -122,7 +104,7 @@ export default function ScoreScreen() {
                 style={{ backgroundColor: colors2.bgLight }}
                 onPress={(e) => {
                   e.stopPropagation();
-                  incrementScore((currentTeamIndex + 1) % teams.length);
+                  incrementScore(1);
                 }}>
                 <FontAwesome name="plus" size={32} color={colors2.textLight} />
               </TouchableOpacity>
@@ -138,17 +120,11 @@ export default function ScoreScreen() {
         </TouchableOpacity>
       </View>
 
-      {gameOver && (
+      {isGameOver() && (
         <View className="absolute inset-0 items-center justify-center bg-black/80">
           <Text className="text-5xl font-bold text-white">
-            {team1.score > team2.score ? `${team1.name} Wins!` : `${team2.name} Wins!`}
+            {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
           </Text>
-          <TouchableOpacity
-            className="mt-4 rounded bg-white p-2"
-            onPress={resetWinningTeamScore}
-          >
-            <Text className="text-lg font-bold text-black">Continuar com Próximo Time</Text>
-          </TouchableOpacity>
         </View>
       )}
 
