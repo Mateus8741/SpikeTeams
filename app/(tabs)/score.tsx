@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import { getTeamColor, useGameStore } from '~/store/gameStore';
 
@@ -50,7 +50,7 @@ export default function ScoreScreen() {
           <View className="w-full items-center">
             <Text className="mb-2 text-4xl font-bold text-white">Team 1</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{team1.score}</Text>
-            <View className="mb-4 flex-row space-x-5">
+            <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
                 className="h-16 w-16 items-center justify-center rounded-full"
                 style={{ backgroundColor: colors1.bgLight }}
@@ -70,26 +70,25 @@ export default function ScoreScreen() {
                 <FontAwesome name="plus" size={32} color={colors1.textLight} />
               </TouchableOpacity>
             </View>
-            <View className="items-center space-y-1">
+            {/* <View className="items-center space-y-1">
               {team1.players.map((player) => (
                 <Text key={player.id} className="text-lg text-white opacity-90">
                   {player.name}
                 </Text>
               ))}
-            </View>
+            </View> */}
           </View>
         </TouchableOpacity>
 
         {/* Time 2 */}
-        <TouchableOpacity
+        <Pressable
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors2.bg }}
-          activeOpacity={0.7}
           onPress={() => incrementScore(1)}>
           <View className="w-full items-center">
             <Text className="mb-2 text-4xl font-bold text-white">Team 2</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{team2.score}</Text>
-            <View className="mb-4 flex-row space-x-5">
+            <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
                 className="h-16 w-16 items-center justify-center rounded-full"
                 style={{ backgroundColor: colors2.bgLight }}
@@ -109,15 +108,15 @@ export default function ScoreScreen() {
                 <FontAwesome name="plus" size={32} color={colors2.textLight} />
               </TouchableOpacity>
             </View>
-            <View className="items-center space-y-1">
+            {/* <View className="items-center space-y-1">
               {team2.players.map((player) => (
                 <Text key={player.id} className="text-lg text-white opacity-90">
                   {player.name}
                 </Text>
               ))}
-            </View>
+            </View> */}
           </View>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {isGameOver() && (
