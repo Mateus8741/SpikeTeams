@@ -1,5 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
@@ -7,6 +7,7 @@ import { getTeamColor, useGameStore } from '~/store/gameStore';
 
 export default function ScoreScreen() {
   const { teams, incrementScore, decrementScore } = useGameStore();
+  const router = useRouter();
 
   if (!teams) {
     return (
@@ -110,6 +111,14 @@ export default function ScoreScreen() {
           </View>
         </TouchableOpacity>
       </View>
+
+      {/* Botão de voltar flutuante no canto superior direito */}
+      <TouchableOpacity
+        className="absolute top-8 left-14 bg-white/50 rounded-full p-2"
+        onPress={() => router.push('/')} // Navegando de volta para a tela index
+      >
+        <FontAwesome name="arrow-left" size={24} color="white" />
+      </TouchableOpacity>
     </>
   );
 }
