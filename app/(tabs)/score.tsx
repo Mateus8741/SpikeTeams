@@ -28,10 +28,6 @@ export default function ScoreScreen() {
       <Stack.Screen
         options={{
           title: 'Game Score',
-          headerStyle: {
-            backgroundColor: '#4F46E5',
-          },
-          headerTintColor: '#fff',
           headerShown: false,
         }}
       />

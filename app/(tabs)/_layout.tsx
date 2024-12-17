@@ -26,6 +26,9 @@ export default function TabLayout() {
         options={{
           title: 'Score',
           tabBarIcon: ({ color }) => <TabBarIcon name="trophy" color={color} />,
+          tabBarStyle: {
+            display: 'none',
+          },
         }}
       />
     </Tabs>
