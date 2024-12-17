@@ -121,14 +121,16 @@ export default function ScoreScreen() {
       </View>
 
       {isGameOver() && (
-        <Text className="text-2xl font-bold text-red-500">
-          {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
-        </Text>
+        <View className="absolute inset-0 items-center justify-center bg-black/80">
+          <Text className="text-5xl font-bold text-white">
+            {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
+          </Text>
+        </View>
       )}
 
       {/* Botão de voltar flutuante no canto superior direito */}
       <TouchableOpacity
-        className="absolute top-8 left-14 bg-white/50 rounded-full p-2"
+        className="absolute left-14 top-8 rounded-full bg-white/50 p-2"
         onPress={() => router.push('/')} // Navegando de volta para a tela index
       >
         <FontAwesome name="arrow-left" size={24} color="white" />
