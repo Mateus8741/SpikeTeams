@@ -32,6 +32,7 @@ export default function ScoreScreen() {
             backgroundColor: '#4F46E5',
           },
           headerTintColor: '#fff',
+          headerShown: false,
         }}
       />
       <View className="flex-1 flex-row">
