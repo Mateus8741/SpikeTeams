@@ -38,12 +38,9 @@ export default function ScoreScreen() {
     return false;
   };
 
-  const resetScores = () => {
-    // Reseta as pontuações e o estado do jogo
-    teams.forEach(team => {
-      team.score = 0; // Reseta a pontuação de cada time
-    });
-    setCurrentTeamIndex(0); // Reseta o índice do time atual
+  const resetWinningTeamScore = () => {
+    const winningTeamIndex = team1.score > team2.score ? currentTeamIndex : (currentTeamIndex + 1) % teams.length;
+    teams[winningTeamIndex].score = 0; // Zera a pontuação do time que ganhou
     setGameOver(false); // Reseta o estado do jogo
   };
 
@@ -142,9 +139,9 @@ export default function ScoreScreen() {
           </Text>
           <TouchableOpacity
             className="mt-4 rounded bg-white p-2"
-            onPress={resetScores} // Chama a função para resetar os placares
+            onPress={resetWinningTeamScore} // Chama a função para zerar a pontuação do time vencedor
           >
-            <Text className="text-lg font-bold text-black">Resetar Placar</Text>
+            <Text className="text-lg font-bold text-black">Zerar Placar do Time Vencedor</Text>
           </TouchableOpacity>
         </View>
       )}
