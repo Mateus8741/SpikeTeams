@@ -24,6 +24,14 @@ export default function ScoreScreen() {
   const colors1 = getTeamColor(0);
   const colors2 = getTeamColor(1);
 
+  const isGameOver = () => {
+    if (team1.score >= 12 || team2.score >= 12) {
+      const scoreDifference = Math.abs(team1.score - team2.score);
+      return scoreDifference >= 2;
+    }
+    return false;
+  };
+
   return (
     <>
       <Stack.Screen
@@ -111,6 +119,12 @@ export default function ScoreScreen() {
           </View>
         </TouchableOpacity>
       </View>
+
+      {isGameOver() && (
+        <Text className="text-2xl font-bold text-red-500">
+          {team1.score > team2.score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
+        </Text>
+      )}
 
       {/* Botão de voltar flutuante no canto superior direito */}
       <TouchableOpacity
