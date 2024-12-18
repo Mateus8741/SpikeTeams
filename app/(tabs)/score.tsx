@@ -13,16 +13,6 @@ export default function ScoreScreen() {
   const [currentTeamIndex, setCurrentTeamIndex] = React.useState(0);
   const [gameOver, setGameOver] = React.useState(false);
 
-  // if (!teams || teams.length < 2) {
-  //   return (
-  //     <View className="flex-1 items-center justify-center bg-gray-50">
-  //       <Text className="px-5 text-center text-lg text-gray-500">
-  //         Form teams first to start the game
-  //       </Text>
-  //     </View>
-  //   );
-  // }
-
   const team1 = teams[currentTeamIndex];
   const team2 = teams[(currentTeamIndex + 1) % teams.length];
 

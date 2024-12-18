@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
 import { useScoreStore } from '~/store/scoreStore';
 import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
@@ -20,21 +20,26 @@ export default function TeamsScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container}>
-        <View style={styles.teamsGrid}>
+      <ScrollView className="flex-1 bg-gray-100 p-5">
+        <View className="flex-row flex-wrap gap-3">
           {teams.map((team, index) => {
             const colors = getTeamColor(index);
             return (
-              <View key={team.id} style={styles.teamCard} className="border border-gray-200">
-                <View style={[styles.teamHeader, { backgroundColor: colors.bg }]}>
-                  <Text style={styles.teamTitle}>Team {index + 1}</Text>
+              <View
+                key={team.id}
+                className="mb-3 w-[48%] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                <View style={{ backgroundColor: colors.bg }} className="p-3">
+                  <Text className="text-center text-base font-bold text-white">
+                    Team {index + 1}
+                  </Text>
                 </View>
-                <View style={styles.teamContent}>
+                <View className="gap-2 p-3">
                   {team.players.map((player) => (
                     <View
                       key={player.id}
-                      style={[styles.playerTag, { backgroundColor: colors.bgLight }]}>
-                      <Text style={[styles.playerTagText, { color: colors.textLight }]}>
+                      style={{ backgroundColor: colors.bgLight }}
+                      className="rounded-md p-2">
+                      <Text style={{ color: colors.textLight }} className="text-center">
                         {player.name}
                       </Text>
                     </View>
@@ -48,48 +53,3 @@ export default function TeamsScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f3f4f6',
-    padding: 20,
-  },
-  teamsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  teamCard: {
-    width: '48%',
-    backgroundColor: 'white',
-    borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-    marginBottom: 12,
-  },
-  teamHeader: {
-    padding: 12,
-  },
-  teamTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  teamContent: {
-    padding: 12,
-    gap: 8,
-  },
-  playerTag: {
-    padding: 8,
-    borderRadius: 6,
-  },
-  playerTagText: {
-    textAlign: 'center',
-  },
-});
