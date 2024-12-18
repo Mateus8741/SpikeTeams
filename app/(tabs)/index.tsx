@@ -1,20 +1,20 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { TeamsModal } from '~/components/TeamsModal';
 import { useTeamsStore } from '~/store/teamsStore';
 
 export default function TeamsScreen() {
+  const router = useRouter();
   const [newPlayerName, setNewPlayerName] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
-  const { players, teams, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
+
+  const { players, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
     useTeamsStore();
 
   const handleFormTeams = () => {
     formTeams();
-    setModalVisible(true);
+    router.push('/(tabs)/teams');
   };
 
   return (
@@ -92,10 +92,6 @@ export default function TeamsScreen() {
           </View>
         </View>
       </ScrollView>
-
-      {teams && (
-        <TeamsModal visible={modalVisible} onClose={() => setModalVisible(false)} teams={teams} />
-      )}
     </>
   );
 }
