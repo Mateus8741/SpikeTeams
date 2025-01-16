@@ -14,6 +14,16 @@ export default function ScoreScreen() {
     useGameState();
   const { handleIncrement, handleDecrement } = useScoreLogic();
 
+  // Determine the next team index that is not currently playing
+  const getNextTeamIndex = () => {
+    let nextIndex =
+      (winningTeamIndex === currentTeamIndex ? currentTeamIndex + 1 : currentTeamIndex) + 1;
+    while (nextIndex === currentTeamIndex || nextIndex === (currentTeamIndex + 1) % teams.length) {
+      nextIndex = (nextIndex + 1) % teams.length;
+    }
+    return nextIndex;
+  };
+
   // Determine colors based on the winning team
   const colors1 = getTeamColor(currentTeamIndex);
   const colors2 = getTeamColor((currentTeamIndex + 1) % teams.length);
@@ -98,7 +108,12 @@ export default function ScoreScreen() {
           <Text className="text-5xl font-bold text-white">
             {winningTeamIndex === currentTeamIndex ? 'Team 1 Wins!' : 'Team 2 Wins!'}
           </Text>
-          <TouchableOpacity className="mt-4 rounded bg-white p-2" onPress={resetWinningTeamScore}>
+          <TouchableOpacity
+            className="mt-4 rounded bg-white p-2"
+            onPress={() => {
+              const nextTeamIndex = getNextTeamIndex();
+              resetWinningTeamScore(nextTeamIndex);
+            }}>
             <Text className="text-lg font-bold text-black">Continuar com Próximo Time</Text>
           </TouchableOpacity>
         </View>

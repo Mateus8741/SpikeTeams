@@ -30,12 +30,8 @@ export function useGameState() {
     }
   }, [score1, score2]);
 
-  const resetWinningTeamScore = () => {
-    if (score1 > score2) {
-      setCurrentTeamIndex(currentTeamIndex);
-    } else {
-      setCurrentTeamIndex((currentTeamIndex + 1) % teams.length);
-    }
+  const resetWinningTeamScore = (nextTeamIndex: number) => {
+    setCurrentTeamIndex(nextTeamIndex);
     resetScores();
     setGameOver(false);
     setWinningTeamIndex(null);
