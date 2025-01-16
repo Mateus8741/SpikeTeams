@@ -65,7 +65,9 @@ export default function ScoreScreen() {
           style={{ backgroundColor: colors2.bg }}
           onPress={() => handleIncrement((currentTeamIndex + 1) % teams.length)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team {(currentTeamIndex + 1) % teams.length + 1}</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">
+              Team {((currentTeamIndex + 1) % teams.length) + 1}
+            </Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{score2}</Text>
             <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
