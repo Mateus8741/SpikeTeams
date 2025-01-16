@@ -10,7 +10,8 @@ import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
 export default function ScoreScreen() {
   const { teams } = useTeamsStore();
   const router = useRouter();
-  const { currentTeamIndex, gameOver, resetWinningTeamScore, score1, score2 } = useGameState();
+  const { currentTeamIndex, gameOver, resetWinningTeamScore, score1, score2, winningTeamIndex } =
+    useGameState();
   const { handleIncrement, handleDecrement } = useScoreLogic();
 
   const colors1 = getTeamColor(0);
@@ -92,7 +93,7 @@ export default function ScoreScreen() {
       {gameOver && (
         <View className="absolute inset-0 items-center justify-center bg-black/80">
           <Text className="text-5xl font-bold text-white">
-            {score1 > score2 ? 'Team 1 Wins!' : 'Team 2 Wins!'}
+            {winningTeamIndex === currentTeamIndex ? 'Team 1 Wins!' : 'Team 2 Wins!'}
           </Text>
           <TouchableOpacity className="mt-4 rounded bg-white p-2" onPress={resetWinningTeamScore}>
             <Text className="text-lg font-bold text-black">Continuar com Próximo Time</Text>

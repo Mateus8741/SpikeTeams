@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { useScoreStore } from '~/store/scoreStore';
 import { useTeamsStore } from '~/store/teamsStore';
 
@@ -7,6 +8,7 @@ export function useGameState() {
   const { scores, resetScores } = useScoreStore();
   const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [winningTeamIndex, setWinningTeamIndex] = useState<number | null>(null);
 
   const score1 = scores[currentTeamIndex] || 0;
   const score2 = scores[(currentTeamIndex + 1) % teams.length] || 0;
@@ -22,6 +24,9 @@ export function useGameState() {
   useEffect(() => {
     if (isGameOver()) {
       setGameOver(true);
+      setWinningTeamIndex(
+        score1 > score2 ? currentTeamIndex : (currentTeamIndex + 1) % teams.length
+      );
     }
   }, [score1, score2]);
 
@@ -33,6 +38,7 @@ export function useGameState() {
     }
     resetScores();
     setGameOver(false);
+    setWinningTeamIndex(null);
   };
 
   return {
@@ -41,5 +47,6 @@ export function useGameState() {
     resetWinningTeamScore,
     score1,
     score2,
+    winningTeamIndex,
   };
-} 
+}
