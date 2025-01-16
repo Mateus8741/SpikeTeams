@@ -14,8 +14,9 @@ export default function ScoreScreen() {
     useGameState();
   const { handleIncrement, handleDecrement } = useScoreLogic();
 
-  const colors1 = getTeamColor(0);
-  const colors2 = getTeamColor(2);
+  // Determine colors based on the winning team
+  const colors1 = getTeamColor(currentTeamIndex);
+  const colors2 = getTeamColor((currentTeamIndex + 1) % teams.length);
 
   return (
     <>
@@ -33,7 +34,7 @@ export default function ScoreScreen() {
           activeOpacity={0.7}
           onPress={() => handleIncrement(currentTeamIndex)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team 1</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">Team {currentTeamIndex + 1}</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{score1}</Text>
             <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
@@ -64,7 +65,7 @@ export default function ScoreScreen() {
           style={{ backgroundColor: colors2.bg }}
           onPress={() => handleIncrement((currentTeamIndex + 1) % teams.length)}>
           <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team 2</Text>
+            <Text className="mb-2 text-4xl font-bold text-white">Team {(currentTeamIndex + 1) % teams.length + 1}</Text>
             <Text className="mb-2 text-[120px] font-bold text-white">{score2}</Text>
             <View className="mb-4 flex-row gap-4 space-x-5">
               <TouchableOpacity
