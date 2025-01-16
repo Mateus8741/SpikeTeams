@@ -9,6 +9,8 @@ export default function TeamsScreen() {
   const { scores } = useScoreStore();
   const { teams } = useTeamsStore();
 
+  console.log(teams[0]);
+
   return (
     <>
       <Stack.Screen
