@@ -1,12 +1,13 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
+import { GameOverMessage } from '~/components/GameOverPanel';
+import { ScorePanel } from '~/components/ScorePanel';
 import { useGameState } from '~/hooks/useGameState';
 import { useScoreLogic } from '~/hooks/useScoreLogic';
 import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
-
 export default function ScoreScreen() {
   const { teams } = useTeamsStore();
   const router = useRouter();
@@ -38,85 +39,31 @@ export default function ScoreScreen() {
       />
       <View className="flex-1 flex-row">
         {/* Time 1 */}
-        <TouchableOpacity
-          className="flex-1 items-center justify-center"
-          style={{ backgroundColor: colors1.bg }}
-          activeOpacity={0.7}
-          onPress={() => handleIncrement(currentTeamIndex)}>
-          <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team {currentTeamIndex + 1}</Text>
-            <Text className="mb-2 text-[120px] font-bold text-white">{score1}</Text>
-            <View className="mb-4 flex-row gap-4 space-x-5">
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors1.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleDecrement(currentTeamIndex);
-                }}>
-                <FontAwesome name="minus" size={32} color={colors1.textLight} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors1.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleIncrement(currentTeamIndex);
-                }}>
-                <FontAwesome name="plus" size={32} color={colors1.textLight} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableOpacity>
+        <ScorePanel
+          currentTeamIndex={currentTeamIndex}
+          score1={score1}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+          colors={colors1}
+        />
 
         {/* Time 2 */}
-        <Pressable
-          className="flex-1 items-center justify-center"
-          style={{ backgroundColor: colors2.bg }}
-          onPress={() => handleIncrement((currentTeamIndex + 1) % teams.length)}>
-          <View className="w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">
-              Team {((currentTeamIndex + 1) % teams.length) + 1}
-            </Text>
-            <Text className="mb-2 text-[120px] font-bold text-white">{score2}</Text>
-            <View className="mb-4 flex-row gap-4 space-x-5">
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors2.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleDecrement((currentTeamIndex + 1) % teams.length);
-                }}>
-                <FontAwesome name="minus" size={32} color={colors2.textLight} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors2.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleIncrement((currentTeamIndex + 1) % teams.length);
-                }}>
-                <FontAwesome name="plus" size={32} color={colors2.textLight} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Pressable>
+        <ScorePanel
+          currentTeamIndex={(currentTeamIndex + 1) % teams.length}
+          score1={score2}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+          colors={colors2}
+        />
       </View>
 
       {gameOver && (
-        <View className="absolute inset-0 items-center justify-center bg-black/80">
-          <Text className="text-5xl font-bold text-white">
-            {winningTeamIndex === currentTeamIndex ? 'Team 1 Wins!' : 'Team 2 Wins!'}
-          </Text>
-          <TouchableOpacity
-            className="mt-4 rounded bg-white p-2"
-            onPress={() => {
-              const nextTeamIndex = getNextTeamIndex();
-              resetWinningTeamScore(nextTeamIndex);
-            }}>
-            <Text className="text-lg font-bold text-black">Continuar com Próximo Time</Text>
-          </TouchableOpacity>
-        </View>
+        <GameOverMessage
+          winningTeamIndex={winningTeamIndex ?? 0}
+          currentTeamIndex={currentTeamIndex}
+          resetWinningTeamScore={resetWinningTeamScore}
+          getNextTeamIndex={getNextTeamIndex}
+        />
       )}
 
       <TouchableOpacity
