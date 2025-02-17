@@ -35,14 +35,17 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.SpikeTeams"
+      "bundleIdentifier": "com.codewave.spiketeams",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.SpikeTeams"
+      "package": "com.codewave.spiketeams"
     },
     "extra": {
       "router": {
