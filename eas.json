@@ -21,6 +21,10 @@
       "autoIncrement": true,
       "android": {
         "autoIncrement": "versionCode"
+      },
+      "ios": {
+        "image": "latest",
+        "autoIncrement": "buildNumber"
       }
     }
   },
