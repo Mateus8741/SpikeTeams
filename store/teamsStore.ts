@@ -5,6 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 interface Player {
   id: string;
   name: string;
+  level: number;
 }
 
 export interface Team {
@@ -16,11 +17,12 @@ interface TeamsState {
   players: Player[];
   teams: Team[];
   playersPerTeam: number;
-  addPlayer: (name: string) => void;
+  addPlayer: (name: string, level?: number) => void;
   removePlayer: (id: string) => void;
   formTeams: () => void;
   setPlayersPerTeam: (count: number) => void;
   resetTeams: () => void;
+  updatePlayerLevel: (id: string, level: number) => void;
 }
 
 export const useTeamsStore = create<TeamsState>()(
@@ -30,9 +32,9 @@ export const useTeamsStore = create<TeamsState>()(
       teams: [],
       playersPerTeam: 4,
 
-      addPlayer: (name) =>
+      addPlayer: (name, level = 1) =>
         set((state) => ({
-          players: [...state.players, { id: Math.random().toString(), name }],
+          players: [...state.players, { id: Math.random().toString(), name, level }],
         })),
 
       removePlayer: (id) =>
@@ -73,6 +75,11 @@ export const useTeamsStore = create<TeamsState>()(
         set({
           teams: [],
         }),
+
+      updatePlayerLevel: (id, level) =>
+        set((state) => ({
+          players: state.players.map((p) => (p.id === id ? { ...p, level } : p)),
+        })),
     }),
     {
       name: 'volleyball-teams-storage',
@@ -130,4 +137,4 @@ const TEAM_COLORS: TeamColors[] = [
 
 export const getTeamColor = (index: number): TeamColors => {
   return TEAM_COLORS[index % TEAM_COLORS.length];
-}; 
+};
