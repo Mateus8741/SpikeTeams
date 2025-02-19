@@ -32,7 +32,7 @@ export const useTeamsStore = create<TeamsState>()(
       teams: [],
       playersPerTeam: 4,
 
-      addPlayer: (name, level = 1) =>
+      addPlayer: (name, level = 0) =>
         set((state) => ({
           players: [...state.players, { id: Math.random().toString(), name, level }],
         })),
@@ -88,7 +88,6 @@ export const useTeamsStore = create<TeamsState>()(
   )
 );
 
-// Cores dos times
 interface TeamColors {
   bg: string;
   text: string;
@@ -98,37 +97,37 @@ interface TeamColors {
 
 const TEAM_COLORS: TeamColors[] = [
   {
-    bg: '#3B82F6', // blue
+    bg: '#3B82F6',
     text: '#3B82F6',
     bgLight: '#BFDBFE',
     textLight: '#1D4ED8',
   },
   {
-    bg: '#EF4444', // red
+    bg: '#EF4444',
     text: '#EF4444',
     bgLight: '#FEE2E2',
     textLight: '#B91C1C',
   },
   {
-    bg: '#10B981', // emerald
+    bg: '#10B981',
     text: '#10B981',
     bgLight: '#D1FAE5',
     textLight: '#047857',
   },
   {
-    bg: '#8B5CF6', // purple
+    bg: '#8B5CF6',
     text: '#8B5CF6',
     bgLight: '#EDE9FE',
     textLight: '#6D28D9',
   },
   {
-    bg: '#F59E0B', // amber
+    bg: '#F59E0B',
     text: '#F59E0B',
     bgLight: '#FEF3C7',
     textLight: '#B45309',
   },
   {
-    bg: '#EC4899', // pink
+    bg: '#EC4899',
     text: '#EC4899',
     bgLight: '#FCE7F3',
     textLight: '#BE185D',
