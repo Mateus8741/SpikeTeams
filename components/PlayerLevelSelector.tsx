@@ -15,7 +15,6 @@ interface PlayerLevelSelectorProps {
   onLevelChange: (level: number) => void;
 }
 
-// Define the props for AnimatedIcon
 type AnimatedIconProps = React.ComponentProps<typeof FontAwesome6> & {
   style?: any;
 };
@@ -50,7 +49,6 @@ export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLev
 
   const handlePress = (index: number) => {
     if (!levels[index].isFireIcon) {
-      // Animação de rotação para bolas de vôlei
       rotations[index].value = withSequence(
         withTiming(360, {
           duration: 600,
@@ -67,14 +65,15 @@ export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLev
     }
   };
 
-  // Iniciar animação infinita do fogo
   useEffect(() => {
-    fireScale.value = withRepeat(
-      withSequence(withTiming(1.2, { duration: 500 }), withTiming(1, { duration: 500 })),
-      -1, // -1 significa repetição infinita
-      true // reverso
-    );
-  }, []);
+    if (level === 4) {
+      fireScale.value = withRepeat(
+        withSequence(withTiming(1.2, { duration: 500 }), withTiming(1, { duration: 500 })),
+        -1,
+        true
+      );
+    }
+  }, [level]);
 
   return (
     <View className="flex-row gap-2">
