@@ -12,7 +12,7 @@ export function GameOverMessage({
   currentTeamIndex,
   resetWinningTeamScore,
   getNextTeamIndex,
-}: GameOverMessageProps) {
+}: Readonly<GameOverMessageProps>) {
   return (
     <View className="absolute inset-0 items-center justify-center bg-black/80">
       <Text className="text-5xl font-bold text-white">
