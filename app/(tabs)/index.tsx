@@ -3,14 +3,23 @@ import { Stack, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { PlayerLevelSelector } from '~/components/PlayerLevelSelector';
 import { useTeamsStore } from '~/store/teamsStore';
 
 export default function TeamsScreen() {
   const router = useRouter();
   const [newPlayerName, setNewPlayerName] = useState('');
+  const [newPlayerLevel, setNewPlayerLevel] = useState(1);
 
-  const { players, playersPerTeam, addPlayer, removePlayer, formTeams, setPlayersPerTeam } =
-    useTeamsStore();
+  const {
+    players,
+    playersPerTeam,
+    addPlayer,
+    removePlayer,
+    formTeams,
+    setPlayersPerTeam,
+    updatePlayerLevel,
+  } = useTeamsStore();
 
   const handleFormTeams = () => {
     formTeams();
@@ -33,24 +42,28 @@ export default function TeamsScreen() {
           {/* Player Registration */}
           <View className="mb-4 rounded-xl bg-white p-4 shadow-sm">
             <Text className="mb-3 text-xl font-bold text-gray-800">Add Players</Text>
-            <View className="flex-row gap-2">
+            <View className="gap-3">
               <TextInput
-                className="flex-1 rounded-lg border border-gray-200 bg-gray-50 p-3"
+                className="rounded-lg border border-gray-200 bg-gray-50 p-3"
                 value={newPlayerName}
                 onChangeText={setNewPlayerName}
                 placeholder="Enter player name"
                 placeholderTextColor="#9CA3AF"
               />
-              <TouchableOpacity
-                className="items-center justify-center rounded-lg bg-indigo-600 p-3"
-                onPress={() => {
-                  if (newPlayerName.trim()) {
-                    addPlayer(newPlayerName.trim());
-                    setNewPlayerName('');
-                  }
-                }}>
-                <FontAwesome name="plus" size={24} color="white" />
-              </TouchableOpacity>
+              <View className="flex-row items-center justify-between">
+                <PlayerLevelSelector level={newPlayerLevel} onLevelChange={setNewPlayerLevel} />
+                <TouchableOpacity
+                  className="items-center justify-center rounded-lg bg-indigo-600 p-3"
+                  onPress={() => {
+                    if (newPlayerName.trim()) {
+                      addPlayer(newPlayerName.trim(), newPlayerLevel);
+                      setNewPlayerName('');
+                      setNewPlayerLevel(1);
+                    }
+                  }}>
+                  <FontAwesome name="plus" size={24} color="white" />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
@@ -66,11 +79,17 @@ export default function TeamsScreen() {
                     <FontAwesome name="user" size={20} color="#4F46E5" />
                     <Text className="text-base text-gray-600">{player.name}</Text>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => removePlayer(player.id)}
-                    className="rounded-full bg-red-100 p-2">
-                    <FontAwesome name="trash" size={20} color="#DC2626" />
-                  </TouchableOpacity>
+                  <View className="flex-row items-center gap-2">
+                    <PlayerLevelSelector
+                      level={player.level}
+                      onLevelChange={(level) => updatePlayerLevel(player.id, level)}
+                    />
+                    <TouchableOpacity
+                      onPress={() => removePlayer(player.id)}
+                      className="rounded-full bg-red-100 p-2">
+                      <FontAwesome name="trash" size={20} color="#DC2626" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               ))}
             </View>
