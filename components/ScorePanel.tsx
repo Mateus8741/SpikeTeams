@@ -19,7 +19,7 @@ export function ScorePanel({
   handleIncrement,
   handleDecrement,
   colors,
-}: ScorePanelProps) {
+}: Readonly<ScorePanelProps>) {
   return (
     <Pressable
       className="flex-1 items-center justify-center"
