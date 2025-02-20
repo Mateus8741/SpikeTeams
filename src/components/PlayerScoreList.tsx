@@ -15,24 +15,23 @@ export function PlayerScoreList({ team, teamColor }: Readonly<PlayerScoreListPro
   const { playerScores, incrementPlayerScore, decrementPlayerScore } = useScoreStore();
 
   return (
-    <View className="absolute bottom-4 w-full px-4">
-      <View className="flex-row flex-wrap justify-center gap-2">
-        {team.players.map((player) => (
+    <View className="absolute -bottom-20 left-0 right-0 flex-row flex-wrap justify-center gap-2">
+      {team.players.map((player) => (
+        <View key={player.id} className="flex flex-col items-center justify-center">
           <TouchableOpacity
-            key={player.id}
             onPress={() => incrementPlayerScore(player.id)}
             onLongPress={() => decrementPlayerScore(player.id)}
-            className="items-center rounded-lg p-2"
+            className="h-12 w-12 items-center justify-center rounded-full"
             style={{ backgroundColor: teamColor.bgLight }}>
             <Text style={{ color: teamColor.textLight }} className="text-lg font-bold">
               {playerScores[player.id] || 0}
             </Text>
-            <Text style={{ color: teamColor.textLight }} className="text-sm">
-              {player.name}
-            </Text>
           </TouchableOpacity>
-        ))}
-      </View>
+          <Text style={{ color: teamColor.bgLight }} className="mt-1 text-center text-sm">
+            {player.name}
+          </Text>
+        </View>
+      ))}
     </View>
   );
 }
