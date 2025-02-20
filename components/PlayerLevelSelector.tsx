@@ -66,16 +66,12 @@ export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLev
   };
 
   useEffect(() => {
-    if (level === 4) {
-      fireScale.value = withRepeat(
-        withSequence(withTiming(1.2, { duration: 500 }), withTiming(1, { duration: 500 })),
-        -1,
-        true
-      );
-    } else {
-      fireScale.value = 1;
-    }
-  }, [level, fireScale]);
+    fireScale.value = withRepeat(
+      withSequence(withTiming(1.2, { duration: 500 }), withTiming(1, { duration: 500 })),
+      -1,
+      true
+    );
+  }, []);
 
   return (
     <View className="flex-row gap-2">
