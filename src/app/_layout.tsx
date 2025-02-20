@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import '../global.css';
+
+import '../../global.css';
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.

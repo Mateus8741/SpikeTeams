@@ -2,8 +2,8 @@ import { Tabs, usePathname } from 'expo-router';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
 
-import { $COLORS } from '~/styles/theme';
-import { useOrientation } from '~/utils/useOrientation';
+import { $COLORS } from '@/styles/theme';
+import { useOrientation } from '@/utils/useOrientation';
 
 export default function TabLayout() {
   const pathname = usePathname();

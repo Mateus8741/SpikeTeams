@@ -2,9 +2,9 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import { useScoreStore } from '~/store/scoreStore';
-import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
-import { $COLORS } from '~/styles/theme';
+import { useScoreStore } from '@/store/scoreStore';
+import { getTeamColor, useTeamsStore } from '@/store/teamsStore';
+import { $COLORS } from '@/styles/theme';
 
 export default function TeamsScreen() {
   const { scores } = useScoreStore();

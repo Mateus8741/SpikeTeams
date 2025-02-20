@@ -2,11 +2,13 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, {
+  cancelAnimation,
   Easing,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
   withSequence,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -66,12 +68,25 @@ export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLev
   };
 
   useEffect(() => {
-    fireScale.value = withRepeat(
-      withSequence(withTiming(1.2, { duration: 500 }), withTiming(1, { duration: 500 })),
-      -1,
-      true
-    );
-  }, []);
+    cancelAnimation(fireScale);
+
+    if (level === 4) {
+      fireScale.value = withRepeat(
+        withSequence(
+          withSpring(1.2, { damping: 2, stiffness: 80 }),
+          withSpring(1, { damping: 2, stiffness: 80 })
+        ),
+        -1,
+        true
+      );
+    } else {
+      fireScale.value = withSpring(1);
+    }
+
+    return () => {
+      cancelAnimation(fireScale);
+    };
+  }, [level]);
 
   return (
     <View className="flex-row gap-2">

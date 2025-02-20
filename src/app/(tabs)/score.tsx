@@ -3,9 +3,9 @@ import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
-import { useGameState } from '~/hooks/useGameState';
-import { useScoreLogic } from '~/hooks/useScoreLogic';
-import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
+import { useGameState } from '@/hooks/useGameState';
+import { useScoreLogic } from '@/hooks/useScoreLogic';
+import { getTeamColor, useTeamsStore } from '@/store/teamsStore';
 
 export default function ScoreScreen() {
   const { teams } = useTeamsStore();

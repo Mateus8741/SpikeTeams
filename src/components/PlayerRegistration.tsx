@@ -4,7 +4,7 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { PlayerLevelSelector } from './PlayerLevelSelector';
 
-import { useTeamsStore } from '~/store/teamsStore';
+import { useTeamsStore } from '@/store/teamsStore';
 
 export function PlayerRegistration() {
   const [newPlayerName, setNewPlayerName] = useState('');
@@ -24,7 +24,7 @@ export function PlayerRegistration() {
         />
         <View className="flex-row items-center justify-between">
           <TouchableOpacity
-            className="bg-app-base items-center justify-center rounded-lg p-3"
+            className="items-center justify-center rounded-lg bg-app-base p-3"
             onPress={() => {
               if (newPlayerName.trim()) {
                 addPlayer(newPlayerName.trim(), newPlayerLevel);

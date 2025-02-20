@@ -3,8 +3,8 @@ import { useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useTeamsStore } from '~/store/teamsStore';
-import { $COLORS } from '~/styles/theme';
+import { useTeamsStore } from '@/store/teamsStore';
+import { $COLORS } from '@/styles/theme';
 
 export function TeamFormation() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export function TeamFormation() {
         />
       </View>
       <TouchableOpacity
-        className="bg-app-base items-center rounded-lg p-4"
+        className="items-center rounded-lg bg-app-base p-4"
         onPress={handleFormTeams}>
         <Text className="text-base font-bold text-white">Form Teams</Text>
       </TouchableOpacity>

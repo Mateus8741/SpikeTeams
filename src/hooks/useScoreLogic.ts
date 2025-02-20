@@ -1,4 +1,4 @@
-import { useScoreStore } from '~/store/scoreStore';
+import { useScoreStore } from '@/store/scoreStore';
 
 export function useScoreLogic() {
   const { incrementScore, decrementScore } = useScoreStore();

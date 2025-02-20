@@ -1,9 +1,10 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { useTeamsStore } from '~/store/teamsStore';
-import { $COLORS } from '~/styles/theme';
 import { PlayerLevelSelector } from './PlayerLevelSelector';
+
+import { useTeamsStore } from '@/store/teamsStore';
+import { $COLORS } from '@/styles/theme';
 
 export function PlayersList() {
   const { players, removePlayer, updatePlayerLevel } = useTeamsStore();
