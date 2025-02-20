@@ -1,18 +1,18 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 
-interface GameOverMessageProps {
+interface GameOverPanelProps {
   winningTeamIndex: number;
   currentTeamIndex: number;
-  resetWinningTeamScore: (nextTeamIndex: number) => void;
+  resetWinningTeamScore: (index: number) => void;
   getNextTeamIndex: () => number;
 }
 
-export function GameOverMessage({
+export function GameOverPanel({
   winningTeamIndex,
   currentTeamIndex,
   resetWinningTeamScore,
   getNextTeamIndex,
-}: Readonly<GameOverMessageProps>) {
+}: Readonly<GameOverPanelProps>) {
   return (
     <View className="absolute inset-0 items-center justify-center bg-black/80">
       <Text className="text-5xl font-bold text-white">
