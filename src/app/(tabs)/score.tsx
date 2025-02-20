@@ -105,7 +105,7 @@ export default function ScoreScreen() {
             </View>
 
             <PlayerScoreList
-              team={teams[(currentTeamIndex + 1) % teams.length]}
+              team={teams.length > 1 ? teams[(currentTeamIndex + 1) % teams.length] : teams[0]}
               teamColor={colors2}
             />
           </View>

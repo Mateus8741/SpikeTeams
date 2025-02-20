@@ -14,6 +14,8 @@ interface PlayerScoreListProps {
 export function PlayerScoreList({ team, teamColor }: Readonly<PlayerScoreListProps>) {
   const { playerScores, incrementPlayerScore, decrementPlayerScore } = useScoreStore();
 
+  if (!team) return null;
+
   return (
     <View className="absolute -bottom-20 left-0 right-0 flex-row flex-wrap justify-center gap-2">
       {team.players.map((player) => (
