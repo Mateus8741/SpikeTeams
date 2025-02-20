@@ -68,6 +68,7 @@ export default function ScoreScreen() {
             </View>
           </View>
         </TouchableOpacity>
+        <PlayerScoreList team={teams[currentTeamIndex]} teamColor={colors1} />
 
         {/* Time 2 */}
         <Pressable
@@ -102,7 +103,7 @@ export default function ScoreScreen() {
           </View>
         </Pressable>
 
-        <PlayerScoreList team={teams[currentTeamIndex]} teamColor={colors1} />
+        <PlayerScoreList team={teams[currentTeamIndex + 1]} teamColor={colors2} />
       </View>
 
       {gameOver && (
