@@ -5,6 +5,7 @@ import { ScrollView, View } from 'react-native';
 import { PlayerRegistration } from '~/components/PlayerRegistration';
 import { PlayersList } from '~/components/PlayersList';
 import { TeamFormation } from '~/components/TeamFormation';
+import { $COLORS } from '~/styles/theme';
 
 export default function TeamsScreen() {
   return (
@@ -13,9 +14,9 @@ export default function TeamsScreen() {
         options={{
           title: 'Team Formation',
           headerStyle: {
-            backgroundColor: '#4F46E5',
+            backgroundColor: $COLORS.appColorBase,
           },
-          headerTintColor: '#fff',
+          headerTintColor: '#000',
         }}
       />
       <ScrollView className="flex-1 bg-gray-50">

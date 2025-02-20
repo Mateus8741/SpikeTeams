@@ -1,9 +1,9 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import { PlayerLevelSelector } from './PlayerLevelSelector';
-
 import { useTeamsStore } from '~/store/teamsStore';
+import { $COLORS } from '~/styles/theme';
+import { PlayerLevelSelector } from './PlayerLevelSelector';
 
 export function PlayersList() {
   const { players, removePlayer, updatePlayerLevel } = useTeamsStore();
@@ -17,7 +17,7 @@ export function PlayersList() {
             key={player.id}
             className="flex-row items-center justify-between rounded-lg bg-gray-50 p-3">
             <View className="flex-row items-center gap-2">
-              <FontAwesome name="user" size={20} color="#4F46E5" />
+              <FontAwesome name="user" size={20} color={$COLORS.appColorBase} />
               <Text className="text-base text-gray-600">{player.name}</Text>
             </View>
             <View className="flex-row items-center gap-2">

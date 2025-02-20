@@ -4,6 +4,7 @@ import { ScrollView, Text, View } from 'react-native';
 
 import { useScoreStore } from '~/store/scoreStore';
 import { getTeamColor, useTeamsStore } from '~/store/teamsStore';
+import { $COLORS } from '~/styles/theme';
 
 export default function TeamsScreen() {
   const { scores } = useScoreStore();
@@ -15,9 +16,9 @@ export default function TeamsScreen() {
         options={{
           title: 'Teams',
           headerStyle: {
-            backgroundColor: '#4F46E5',
+            backgroundColor: $COLORS.appColorBase,
           },
-          headerTintColor: '#fff',
+          headerTintColor: '#000',
         }}
       />
       <ScrollView className="flex-1 bg-gray-100 p-5">

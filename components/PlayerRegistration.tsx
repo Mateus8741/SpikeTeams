@@ -24,7 +24,7 @@ export function PlayerRegistration() {
         />
         <View className="flex-row items-center justify-between">
           <TouchableOpacity
-            className="items-center justify-center rounded-lg bg-indigo-600 p-3"
+            className="bg-app-base items-center justify-center rounded-lg p-3"
             onPress={() => {
               if (newPlayerName.trim()) {
                 addPlayer(newPlayerName.trim(), newPlayerLevel);
