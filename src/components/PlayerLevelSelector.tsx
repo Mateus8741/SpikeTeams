@@ -1,63 +1,28 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
-import Animated, {
-  cancelAnimation,
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { cancelAnimation, useSharedValue } from 'react-native-reanimated';
 
-interface PlayerLevelSelectorProps {
-  level: number;
-  onLevelChange: (level: number) => void;
-}
-
-type AnimatedIconProps = React.ComponentProps<typeof FontAwesome6> & {
-  style?: any;
-};
+import { useFireStyle, useVolleyballStyle } from '@/animations/styles/playerLevel';
+import { handleFireAnimation, handleRotationAnimation, levels } from '@/functions/playerLevel';
+import { AnimatedIconProps, PlayerLevelSelectorProps } from '@/types/playerLevel';
 
 const AnimatedIcon = Animated.createAnimatedComponent<AnimatedIconProps>(FontAwesome6);
 
 export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLevelSelectorProps>) {
-  const levels = [
-    { icon: 'volleyball', color: '#9CA3AF', isFireIcon: false },
-    { icon: 'volleyball', color: '#60A5FA', isFireIcon: false },
-    { icon: 'volleyball', color: '#34D399', isFireIcon: false },
-    { icon: 'fire', color: '#F87171', isFireIcon: true },
-  ];
-
   const rotations = [useSharedValue(0), useSharedValue(0), useSharedValue(0), useSharedValue(0)];
   const fireScale = useSharedValue(1);
 
-  const volleyballStyle0 = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotations[0].value}deg` }],
-  }));
-  const volleyballStyle1 = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotations[1].value}deg` }],
-  }));
-  const volleyballStyle2 = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotations[2].value}deg` }],
-  }));
-  const fireStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: fireScale.value }],
-  }));
+  const volleyballStyle0 = useVolleyballStyle(rotations[0]);
+  const volleyballStyle1 = useVolleyballStyle(rotations[1]);
+  const volleyballStyle2 = useVolleyballStyle(rotations[2]);
+  const fireStyle = useFireStyle(fireScale);
 
   const animatedStyles = [volleyballStyle0, volleyballStyle1, volleyballStyle2, fireStyle];
 
   const handlePress = (index: number) => {
     if (!levels[index].isFireIcon) {
-      rotations[index].value = withSequence(
-        withTiming(360, {
-          duration: 600,
-          easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-        }),
-        withTiming(0, { duration: 0 })
-      );
+      handleRotationAnimation(rotations[index]);
     }
 
     if (level === index + 1) {
@@ -68,43 +33,25 @@ export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLev
   };
 
   useEffect(() => {
-    cancelAnimation(fireScale);
-
-    if (level === 4) {
-      fireScale.value = withRepeat(
-        withSequence(
-          withSpring(1.2, { damping: 2, stiffness: 80 }),
-          withSpring(1, { damping: 2, stiffness: 80 })
-        ),
-        -1,
-        true
-      );
-    } else {
-      fireScale.value = withSpring(1);
-    }
-
-    return () => {
-      cancelAnimation(fireScale);
-    };
+    handleFireAnimation(fireScale, level);
+    return () => cancelAnimation(fireScale);
   }, [level]);
 
   return (
     <View className="flex-row gap-2">
-      {levels.map((item, index) => {
-        return (
-          <Pressable
-            key={index}
-            onPress={() => handlePress(index)}
-            className={`rounded-full p-1 ${level === index + 1 ? 'bg-gray-100' : ''}`}>
-            <AnimatedIcon
-              name={item.icon as any}
-              size={20}
-              color={level >= index + 1 ? item.color : '#E5E7EB'}
-              style={animatedStyles[index]}
-            />
-          </Pressable>
-        );
-      })}
+      {levels.map((item, index) => (
+        <Pressable
+          key={index}
+          onPress={() => handlePress(index)}
+          className={`rounded-full p-1 ${level === index + 1 ? 'bg-gray-100' : ''}`}>
+          <AnimatedIcon
+            name={item.icon as any}
+            size={20}
+            color={level >= index + 1 ? item.color : '#E5E7EB'}
+            style={animatedStyles[index]}
+          />
+        </Pressable>
+      ))}
     </View>
   );
 }
