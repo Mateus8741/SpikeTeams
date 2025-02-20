@@ -16,7 +16,7 @@ export default function TeamsScreen() {
           headerStyle: {
             backgroundColor: $COLORS.appColorBase,
           },
-          headerTintColor: '#000',
+          headerTintColor: '#fff',
         }}
       />
       <ScrollView className="flex-1 bg-gray-50">

@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       colors: {
         app: {
-          base: $COLORS,
+          base: $COLORS.appColorBase,
           dark: $COLORS.appColorDark,
           light: $COLORS.appColorLight,
           bg: $COLORS.appColorBg,
