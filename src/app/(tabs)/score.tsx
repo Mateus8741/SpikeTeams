@@ -28,7 +28,7 @@ export default function ScoreScreen() {
 
   // Determine colors based on the winning team
   const colors1 = getTeamColor(currentTeamIndex);
-  const colors2 = getTeamColor(currentTeamIndex + 1);
+  const colors2 = getTeamColor((currentTeamIndex + 1) % teams.length);
 
   return (
     <>
@@ -104,7 +104,10 @@ export default function ScoreScreen() {
               </TouchableOpacity>
             </View>
 
-            <PlayerScoreList team={teams[currentTeamIndex + 1]} teamColor={colors2} />
+            <PlayerScoreList
+              team={teams[(currentTeamIndex + 1) % teams.length]}
+              teamColor={colors2}
+            />
           </View>
         </Pressable>
       </View>
