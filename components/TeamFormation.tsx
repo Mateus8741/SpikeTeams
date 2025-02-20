@@ -25,7 +25,7 @@ export function TeamFormation() {
         />
       </View>
       <TouchableOpacity
-        className="items-center rounded-lg bg-indigo-600 p-4"
+        className="bg-app-base items-center rounded-lg p-4"
         onPress={handleFormTeams}>
         <Text className="text-base font-bold text-white">Form Teams</Text>
       </TouchableOpacity>
