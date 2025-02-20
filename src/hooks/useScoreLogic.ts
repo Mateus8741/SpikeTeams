@@ -15,4 +15,4 @@ export function useScoreLogic() {
     handleIncrement,
     handleDecrement,
   };
-} 
+}
