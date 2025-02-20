@@ -3,10 +3,10 @@ import { Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
+import { PlayerScoreList } from '@/components/PlayerScoreList';
 import { useGameState } from '@/hooks/useGameState';
 import { useScoreLogic } from '@/hooks/useScoreLogic';
 import { getTeamColor, useTeamsStore } from '@/store/teamsStore';
-
 export default function ScoreScreen() {
   const { teams } = useTeamsStore();
   const router = useRouter();
@@ -101,6 +101,8 @@ export default function ScoreScreen() {
             </View>
           </View>
         </Pressable>
+
+        <PlayerScoreList team={teams[currentTeamIndex]} teamColor={colors1} />
       </View>
 
       {gameOver && (
