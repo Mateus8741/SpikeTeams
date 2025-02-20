@@ -27,7 +27,9 @@ export function PlayerScoreList({ team, teamColor }: Readonly<PlayerScoreListPro
               {playerScores[player.id] || 0}
             </Text>
           </TouchableOpacity>
-          <Text style={{ color: teamColor.bgLight }} className="mt-1 text-center text-sm">
+          <Text
+            style={{ color: teamColor.bgLight }}
+            className="mt-1 text-center text-sm font-bold leading-5">
             {player.name}
           </Text>
         </View>
