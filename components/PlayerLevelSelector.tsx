@@ -72,8 +72,10 @@ export function PlayerLevelSelector({ level, onLevelChange }: Readonly<PlayerLev
         -1,
         true
       );
+    } else {
+      fireScale.value = 1;
     }
-  }, [level]);
+  }, [level, fireScale]);
 
   return (
     <View className="flex-row gap-2">
