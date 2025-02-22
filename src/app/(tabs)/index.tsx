@@ -22,8 +22,8 @@ export default function TeamsScreen() {
       <ScrollView className="flex-1 bg-gray-50">
         <View className="gap-4 p-4">
           <PlayerRegistration />
-          <PlayersList />
           <TeamFormation />
+          <PlayersList />
         </View>
       </ScrollView>
     </>
