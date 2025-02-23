@@ -30,17 +30,15 @@
   },
   "submit": {
     "production": {
-      "production": {
-        "releaseStatus": "draft",
-        "android": {
-          "track": "production",
-          "serviceAccountKeyPath": "google-services.json"
-        },
-        "ios": {
-          "appleId": "mateus_sousa_tavares@hotmail.com",
-          "ascAppId": "6742121991"
+      "android": {
+        "track": "production",
+        "serviceAccountKeyPath": "google-services.json",
+        "releaseStatus": "draft"
+      },
+      "ios": {
+        "appleId": "mateus_sousa_tavares@hotmail.com",
+        "ascAppId": "6742121991"
         }
-      }
     }
   }
 }
