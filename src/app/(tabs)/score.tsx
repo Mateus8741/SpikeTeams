@@ -38,38 +38,6 @@ export default function ScoreScreen() {
       />
       <View className="flex-1 flex-row">
         {/* Time 1 */}
-        {/* <TouchableOpacity
-          className="flex-1 items-center justify-center"
-          style={{ backgroundColor: colors1.bg }}
-          activeOpacity={0.7}
-          onPress={() => handleIncrement(currentTeamIndex)}>
-          <View className="mb-12 w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">Team {currentTeamIndex + 1}</Text>
-            <Text className="mb-2 text-[120px] font-bold text-white">{score1}</Text>
-            <View className="mb-4 flex-row gap-4 space-x-5">
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors1.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleDecrement(currentTeamIndex);
-                }}>
-                <FontAwesome name="minus" size={32} color={colors1.textLight} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors1.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleIncrement(currentTeamIndex);
-                }}>
-                <FontAwesome name="plus" size={32} color={colors1.textLight} />
-              </TouchableOpacity>
-            </View>
-
-            <PlayerScoreList team={teams[currentTeamIndex]} teamColor={colors1} />
-          </View>
-        </TouchableOpacity> */}
 
         <ScoreBoard
           teamIndex={currentTeamIndex}
@@ -80,42 +48,6 @@ export default function ScoreScreen() {
         />
 
         {/* Time 2 */}
-        {/* <Pressable
-          className="flex-1 items-center justify-center"
-          style={{ backgroundColor: colors2.bg }}
-          onPress={() => handleIncrement((currentTeamIndex + 1) % teams.length)}>
-          <View className="mb-12 w-full items-center">
-            <Text className="mb-2 text-4xl font-bold text-white">
-              Team {((currentTeamIndex + 1) % teams.length) + 1}
-            </Text>
-            <Text className="mb-2 text-[120px] font-bold text-white">{score2}</Text>
-            <View className="mb-4 flex-row gap-4 space-x-5">
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors2.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleDecrement((currentTeamIndex + 1) % teams.length);
-                }}>
-                <FontAwesome name="minus" size={32} color={colors2.textLight} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="h-16 w-16 items-center justify-center rounded-full"
-                style={{ backgroundColor: colors2.bgLight }}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  handleIncrement((currentTeamIndex + 1) % teams.length);
-                }}>
-                <FontAwesome name="plus" size={32} color={colors2.textLight} />
-              </TouchableOpacity>
-            </View>
-
-            <PlayerScoreList
-              team={teams.length > 1 ? teams[(currentTeamIndex + 1) % teams.length] : teams[0]}
-              teamColor={colors2}
-            />
-          </View>
-        </Pressable> */}
         <ScoreBoard
           teamIndex={(currentTeamIndex + 1) % teams.length}
           score={score2}
