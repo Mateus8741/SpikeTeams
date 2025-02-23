@@ -2,7 +2,8 @@ import { Tabs, usePathname } from 'expo-router';
 
 import { TabBarIcon } from '../../components/TabBarIcon';
 
-import { useOrientation } from '~/utils/useOrientation';
+import { $COLORS } from '@/styles/theme';
+import { useOrientation } from '@/utils/useOrientation';
 
 export default function TabLayout() {
   const pathname = usePathname();
@@ -12,7 +13,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#4F46E5',
+        tabBarActiveTintColor: $COLORS.appColorBase,
       }}>
       <Tabs.Screen
         name="index"

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useScoreStore } from '~/store/scoreStore';
-import { useTeamsStore } from '~/store/teamsStore';
+import { useScoreStore } from '@/store/scoreStore';
+import { useTeamsStore } from '@/store/teamsStore';
 
 export function useGameState() {
   const { teams } = useTeamsStore();
