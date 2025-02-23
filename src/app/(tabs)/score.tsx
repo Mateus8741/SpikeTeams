@@ -1,10 +1,10 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { GameOverPanel } from '@/components/GameOverPanel';
-import { PlayerScoreList } from '@/components/PlayerScoreList';
+import { ScoreBoard } from '@/components/ScoreBoard';
 import { useGameState } from '@/hooks/useGameState';
 import { useScoreLogic } from '@/hooks/useScoreLogic';
 import { getTeamColor, useTeamsStore } from '@/store/teamsStore';
@@ -16,7 +16,6 @@ export default function ScoreScreen() {
     useGameState();
   const { handleIncrement, handleDecrement } = useScoreLogic();
 
-  // Determine the next team index that is not currently playing
   const getNextTeamIndex = () => {
     let nextIndex =
       (winningTeamIndex === currentTeamIndex ? currentTeamIndex + 1 : currentTeamIndex) + 1;
@@ -26,7 +25,6 @@ export default function ScoreScreen() {
     return nextIndex;
   };
 
-  // Determine colors based on the winning team
   const colors1 = getTeamColor(currentTeamIndex);
   const colors2 = getTeamColor((currentTeamIndex + 1) % teams.length);
 
@@ -40,7 +38,7 @@ export default function ScoreScreen() {
       />
       <View className="flex-1 flex-row">
         {/* Time 1 */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors1.bg }}
           activeOpacity={0.7}
@@ -71,10 +69,18 @@ export default function ScoreScreen() {
 
             <PlayerScoreList team={teams[currentTeamIndex]} teamColor={colors1} />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        <ScoreBoard
+          teamIndex={currentTeamIndex}
+          score={score1}
+          colors={colors1}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+        />
 
         {/* Time 2 */}
-        <Pressable
+        {/* <Pressable
           className="flex-1 items-center justify-center"
           style={{ backgroundColor: colors2.bg }}
           onPress={() => handleIncrement((currentTeamIndex + 1) % teams.length)}>
@@ -109,7 +115,14 @@ export default function ScoreScreen() {
               teamColor={colors2}
             />
           </View>
-        </Pressable>
+        </Pressable> */}
+        <ScoreBoard
+          teamIndex={(currentTeamIndex + 1) % teams.length}
+          score={score2}
+          colors={colors2}
+          handleIncrement={handleIncrement}
+          handleDecrement={handleDecrement}
+        />
       </View>
 
       {gameOver && (
