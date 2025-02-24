@@ -68,7 +68,7 @@ export default function ScoreScreen() {
 
       <TouchableOpacity
         className="absolute left-14 top-8 rounded-full bg-white/50 p-2"
-        onPress={() => router.push('/(tabs)')}>
+        onPress={() => router.back()}>
         <FontAwesome name="arrow-left" size={24} color="white" />
       </TouchableOpacity>
     </>
