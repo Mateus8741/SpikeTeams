@@ -1,6 +1,7 @@
-import { Stack } from 'expo-router';
+import { Stack, usePathname } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { useOrientation } from '@/utils/useOrientation';
 import '../../global.css';
 
 export const unstable_settings = {
@@ -9,6 +10,9 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  const pathname = usePathname();
+  useOrientation(pathname);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Stack>
