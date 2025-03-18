@@ -1,13 +1,12 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import { useScoreStore } from '@/store/scoreStore';
+import { TabBarIcon } from '@/components/TabBarIcon';
 import { getTeamColor, useTeamsStore } from '@/store/teamsStore';
 import { $COLORS } from '@/styles/theme';
 
 export default function TeamsScreen() {
-  const { scores } = useScoreStore();
   const { teams } = useTeamsStore();
 
   return (
@@ -19,6 +18,11 @@ export default function TeamsScreen() {
             backgroundColor: $COLORS.appColorBase,
           },
           headerTintColor: '#fff',
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()} className="ml-4">
+              <TabBarIcon color={$COLORS.appColorBg} name="chevron-left" />
+            </TouchableOpacity>
+          ),
         }}
       />
       <ScrollView className="flex-1 bg-gray-100 p-5">
