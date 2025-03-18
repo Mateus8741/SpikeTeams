@@ -11,7 +11,7 @@ export function TeamFormation() {
 
   const handleFormTeams = () => {
     formTeams();
-    router.push('/(tabs)/teams');
+    router.push('/teams');
   };
 
   const maxPlayers = Math.max(Math.floor(players.length / 2), 2);
